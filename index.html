@@ -59,6 +59,7 @@
             <nav class="nav-links" aria-label="Основная навигация">
                 <a href="#services">Занятия</a>
                 <a href="#results">Результаты</a>
+                <a href="#reviews">Отзывы</a>
                 <a href="#about">Обо мне</a>
                 <div class="nav-messengers">
                     <a href="https://t.me/IartsevaOlgaLvovna" target="_blank" class="msgr-link"
@@ -294,6 +295,52 @@
             <p class="pain-after rv">А самое главное — дети начинали говорить, что <span class="mark">русский язык и
                     математика — любимые предметы</span>. За все годы работы у меня не было ни одного негативного
                 отзыва.</p>
+        </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" style="scroll-margin-top: 80px;">
+        <div class="wrap">
+            <div class="section-head rv">
+                <span class="eyebrow">отзывы</span>
+                <h2>Что говорят родители</h2>
+                <p class="sub">Скриншоты реальных отзывов и сообщений от мам и пап. Нажмите на картинку, чтобы увеличить её.</p>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card rv" data-img="otziv-2025.jpg">
+                    <img src="otziv-2025.jpg" alt="Отзыв родителя 2025" loading="lazy">
+                </div>
+                <div class="review-card rv" data-img="otziv-2025-2.jpg">
+                    <img src="otziv-2025-2.jpg" alt="Отзыв родителя 2025" loading="lazy">
+                </div>
+                <div class="review-card rv" data-img="otziv-2024.jpg">
+                    <img src="otziv-2024.jpg" alt="Отзыв родителя 2024" loading="lazy">
+                </div>
+                <div class="review-card rv" data-img="otziv-2024-2.jpg">
+                    <img src="otziv-2024-2.jpg" alt="Отзыв родителя 2024" loading="lazy">
+                </div>
+                <div class="review-card rv hidden-mobile" data-img="otziv-2023.jpg">
+                    <img src="otziv-2023.jpg" alt="Отзыв родителя 2023" loading="lazy">
+                </div>
+                <div class="review-card rv hidden-mobile" data-img="otziv-2023-2.jpg">
+                    <img src="otziv-2023-2.jpg" alt="Отзыв родителя 2023" loading="lazy">
+                </div>
+                <div class="review-card rv hidden" data-img="otziv-2023-3.jpg">
+                    <img src="otziv-2023-3.jpg" alt="Отзыв родителя 2023" loading="lazy">
+                </div>
+                <div class="review-card rv hidden" data-img="otziv-2021.jpg">
+                    <img src="otziv-2021.jpg" alt="Отзыв родителя 2021" loading="lazy">
+                </div>
+                <div class="review-card rv hidden" data-img="otziv-2020.jpg">
+                    <img src="otziv-2020.jpg" alt="Отзыв родителя 2020" loading="lazy">
+                </div>
+                <div class="review-card rv hidden" data-img="otziv-2017.jpg">
+                    <img src="otziv-2017.jpg" alt="Отзыв родителя 2017" loading="lazy">
+                </div>
+            </div>
+            <div class="reviews-more-container rv">
+                <button type="button" id="showMoreReviews" class="btn btn-ghost">Показать ещё отзывы</button>
+            </div>
         </div>
     </section>
 
@@ -610,7 +657,21 @@
         </div>
     </footer>
 
-    <div class="sticky-cta"><a href="#quiz" class="btn btn-red">Бесплатный пробный урок — 30 минут</a></div>
+
+    <!-- Кнопка "Наверх" -->
+    <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Наверх" title="Наверх">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <!-- LIGHTBOX FOR REVIEWS -->
+    <div id="reviewsLightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Просмотр отзыва">
+        <button class="lightbox-close" aria-label="Закрыть">&times;</button>
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Увеличенный отзыв">
+        </div>
+    </div>
 
     <script>
         (function () {
@@ -784,6 +845,78 @@
                     }
                 });
             });
+
+            // ===== REVIEWS SHOW MORE & LIGHTBOX =====
+            var showMoreBtn = document.getElementById('showMoreReviews');
+            if (showMoreBtn) {
+                showMoreBtn.addEventListener('click', function () {
+                    var hiddenCards = document.querySelectorAll('.reviews-grid .review-card.hidden, .reviews-grid .review-card.hidden-mobile');
+                    hiddenCards.forEach(function (card) {
+                        card.classList.remove('hidden');
+                        card.classList.remove('hidden-mobile');
+                        if (typeof io !== 'undefined') {
+                            io.observe(card);
+                        } else {
+                            card.classList.add('in');
+                        }
+                    });
+                    showMoreBtn.style.display = 'none';
+                });
+            }
+
+            var lightbox = document.getElementById('reviewsLightbox');
+            var lightboxImg = document.getElementById('lightboxImg');
+            if (lightbox && lightboxImg) {
+                var reviewCards = document.querySelectorAll('.reviews-grid .review-card');
+                reviewCards.forEach(function (card) {
+                    card.addEventListener('click', function () {
+                        var imgSrc = card.getAttribute('data-img');
+                        if (imgSrc) {
+                            lightboxImg.src = imgSrc;
+                            lightbox.classList.add('active');
+                            lightbox.setAttribute('aria-hidden', 'false');
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+                });
+
+                var closeLightbox = function () {
+                    lightbox.classList.remove('active');
+                    lightbox.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                    setTimeout(function () {
+                        lightboxImg.src = '';
+                    }, 300);
+                };
+
+                lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+                lightbox.addEventListener('click', function (e) {
+                    if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+                        closeLightbox();
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            // ===== SCROLL TO TOP BUTTON =====
+            var scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (scrollTopBtn) {
+                window.addEventListener('scroll', function () {
+                    if (window.scrollY > 400) {
+                        scrollTopBtn.classList.add('visible');
+                    } else {
+                        scrollTopBtn.classList.remove('visible');
+                    }
+                });
+                scrollTopBtn.addEventListener('click', function () {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
         })();
     </script>
 </body>
