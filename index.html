@@ -726,8 +726,11 @@
                 var phone = document.getElementById('fphone').value.trim();
                 var err = form.querySelector('[data-step="4"] .err');
 
-                var digitsOnly = phone.replace(/\D/g, '');
-                var isValidPhone = phone.startsWith('@') ? phone.length >= 3 : digitsOnly.length >= 10;
+               var digitsOnly = phone.replace(/\D/g, '');
+// Проверяем, есть ли в строке хотя бы одна буква
+var hasLetters = /[a-zA-Zа-яА-Я]/.test(phone); 
+// Если начинается с @ ИЛИ содержит буквы — это никнейм. Иначе — ждем 10 цифр телефона.
+var isValidPhone = (phone.startsWith('@') || hasLetters) ? phone.length >= 3 : digitsOnly.length >= 10;
 
                 if (!name || !isValidPhone) { err.style.display = 'block'; return; }
                 err.style.display = 'none';
@@ -780,7 +783,8 @@
                     var content = document.getElementById('finalContent');
 
                     var digitsOnly = phone.replace(/\D/g, '');
-                    var isValidPhone = phone.startsWith('@') ? phone.length >= 3 : digitsOnly.length >= 10;
+var hasLetters = /[a-zA-Zа-яА-Я]/.test(phone);
+var isValidPhone = (phone.startsWith('@') || hasLetters) ? phone.length >= 3 : digitsOnly.length >= 10;
 
                     if (!name || !isValidPhone) { err.style.display = 'block'; return; }
                     err.style.display = 'none';
