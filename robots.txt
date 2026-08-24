@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /thanks
+Disallow: /success
+Disallow: /privacy-policy
+Disallow: /*?utm_
+Disallow: /*?clid=
+Allow: /
+
+Sitemap: https://repetitor-lp.github.io/sitemap.xml
